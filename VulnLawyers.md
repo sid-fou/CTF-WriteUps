@@ -14,7 +14,7 @@ Welcome to my writeup for the VulnLawyers app challenge! Here’s a walkthrough 
   <img width="995" height="309" alt="portscan" src="https://github.com/user-attachments/assets/bb2d720e-11b3-45a6-86b3-926ab370dd63" />
 
 
-- Ran dirsearch with a decent wordlist to enumerate directories. Found some usual suspects: `/css/`, `/images/`, `/js/`, plus interesting endpoints: `/login` and `/denied`.
+- Ran dirsearch with a given wordlist on HackingHub to enumerate directories. Found some usual suspects: `/css`, `/images`, `/js`, plus interesting endpoints: `/login` and `/denied`.
 
   <img width="997" height="388" alt="dirsearch_on_scope" src="https://github.com/user-attachments/assets/a6352891-4f2b-42d4-993d-18877cf388b6" />
 
@@ -31,7 +31,7 @@ Don’t ignore the bodies of redirect responses. Sometimes developers leave secr
 
 ## Part 2: The /denied Endpoint & New Login Flow
 
-- Checked `/denied` directly: a 401 Unauthorized page saying my IP was blocked. Nothing useful or sensitive leaked here-just clean, minimal branding.
+- Checked `/denied` directly: a 401 Unauthorized page saying my IP was blocked. Nothing useful or sensitive leaked here, just clean, minimal branding.
 
 - Visited `/lawyers-only`, which redirected me to `/lawyers-only-login`. This new login page used a simple form asking for email and password. No flags, just a standard login.
 
@@ -47,7 +47,7 @@ Don’t ignore the bodies of redirect responses. Sometimes developers leave secr
 
 ## Part 3: Login Attempts & Virtual Host Fuzzing
 
-- First, I tried to log in using various SQL/NoSQL injection payloads and common credentials (`admin:admin123`, etc). Didn’t get far-site handled them gracefully with generic errors, no verbose feedback or hints.
+- First, I tried to log in using various SQL/NoSQL injection payloads and common credentials (`admin:admin123`, etc). Didn’t get far, site handled them gracefully with generic errors, no verbose feedback or hints.
 
 - Switched gears and tried vhost fuzzing: using ffuf with a wordlist to vary the `Host:` header. This found two new subdomains: `api.tantalus.ctfio.com` and `data.tantalus.ctfio.com`. Both returned JSON with app info and, importantly, another flag.
   
@@ -59,7 +59,7 @@ Don’t ignore the bodies of redirect responses. Sometimes developers leave secr
 
   
 **Takeaway:**  
-If the main app is locked down, always check for forgotten subdomains-the devs often leave APIs wide open.
+If the main app is locked down, always check for forgotten subdomains. The devs often leave APIs wide open(obviously kidding xD)
 
 ---
 
@@ -74,7 +74,7 @@ If the main app is locked down, always check for forgotten subdomains-the devs o
   <img width="2360" height="632" alt="flag3" src="https://github.com/user-attachments/assets/6163e3bc-ca00-473d-8691-709df96365f1" />
 
 
-- Took those emails and tried to brute-force logins via `/lawyers-only-login` using the HackingHub-provided `password.txt` wordlist.  
+- Took those emails and tried to brute-force logins via `/lawyers-only-login` using the HackingHub provided `password.txt` wordlist.  
 Managed to log in as `jaskaran.lowe@vulnlawyers.ctf` with the password `summer`.
 
 - Dashboard loaded for the account, showing site navigation, “Current Cases,” and yet another flag.
@@ -91,7 +91,7 @@ APIs that leak user data are gold for brute force attacks. Weak passwords are st
 
 - Checked out the profile section in the logged-in account. The app made an AJAX request to `/lawyers-only-profile-details/4`, which returned a JSON response with the user’s name, email, and password in plaintext.
 
-- Manually changed the profile ID in the URL (`/1`, `/2`, etc.) and pulled the same info for other accounts-including passwords for everyone, and one response had a flag too.
+- Manually changed the profile ID in the URL (`/1`, `/2`, etc.) and pulled the same info for other accounts, including passwords for everyone, and one response had a flag too.
 
   <img width="2048" height="444" alt="flag5" src="https://github.com/user-attachments/assets/af89691f-f4d6-473e-a016-7a503fda9f13" />
 
@@ -107,7 +107,7 @@ APIs that leak user data are gold for brute force attacks. Weak passwords are st
 
 
 **Why it matters:**  
-Unrestricted destructive actions, no CSRF or privilege checks, and lots of lost trust. Real applications should have better controls.
+Unrestricted destructive actions, no CSRF or privilege checks, and lots of lost trust.
 
 ---
 
@@ -130,7 +130,7 @@ Unrestricted destructive actions, no CSRF or privilege checks, and lots of lost 
 - Hidden subdomains and APIs often have big security gaps.
 - Exposed email/user lists make brute force attacks trivial.
 - If you can guess object IDs in API calls, you’ll likely break privilege boundaries.
-- Applications should never display or return plaintext passwords-ever.
+- Applications should never display or return passwords in plaintext EVER.
 - CSRF, privilege checks, and secure API coding: not optional.
 
 ---
