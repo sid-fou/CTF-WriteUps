@@ -27,7 +27,7 @@ Feel free to browse the folders to read through different challenges. Each write
 - Challenge overview and initial recon
 - Exploitation steps and findings
 - Summary tables where useful
-- Screenshots (add your own by replacing the placeholder tags)
+- Screenshots
 
 ---
 
