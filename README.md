@@ -16,6 +16,7 @@ Welcome! This repository is a collection of detailed walkthroughs and writeups f
 ## 🏁 Table of Contents
 
 - [VulnLawyers Web Challenge](https://github.com/sid-fou/CTF-WriteUps/blob/main/VulnLawyers.md)
+- [Intro to AWS Pentesting(Tyler Ramsbey)](https://github.com/sid-fou/CTF-WriteUps/tree/main/Intro%20to%20AWS%20Pentesting%20(Tyler%20Ramsbey))
 - *More writeups coming soon!*
 
 ---
